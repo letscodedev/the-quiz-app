@@ -1,0 +1,17 @@
+.Home {
+    padding: 2rem 0;
+    background-color: #eff3f7;
+    height: 100vh;
+    width: 100%;
+    font-family: 'Montserrat';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user__dp {
+    height:250px;
+    width: auto;
+    margin: 1rem;
+}
