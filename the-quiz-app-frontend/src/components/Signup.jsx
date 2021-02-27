@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { SIGN_IN } from '../reducers/auth';
-import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import './Signup.css';
 import { Link, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios';
 
 function Signup() {
+	const [error, setError] = useState('')
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
@@ -76,11 +77,12 @@ function Signup() {
 		axios.post('http://localhost:5000/user/register', formData)
 		.then((userCredential) => {
             var user = userCredential.data;
-            console.log(user)
+            console.log(user.user_data)
 			dispatch(SIGN_IN(user.user_data))
         })
         .catch((error) => {
-			console.log(error)
+			setError("Mobile or Email already exists!")
+			console.log(error.error)
 		});
     }
 
@@ -91,7 +93,7 @@ function Signup() {
 					<>
 					<div className="box">
 						<form>
-							<h3 class="box__title">Sign Up</h3>
+							<h3 className="box__title">Sign Up</h3>
 							<div className="row">
 								<div className="col-md-6">
 									<div className="form-group">
@@ -201,6 +203,7 @@ function Signup() {
 									</div>
 								</div>
 							</div>
+							{<><p style={{color: 'red', fontWeight: '800'}}>{error}</p></>}
 							<button type="submit" className="btn btn-primary btn-block" onClick={event => {createUserWithEmailAndPasswordHandler(event, firstName, lastName, email, password, country, state, city, mobile, dob, displayPhoto, hobbies, gender);}}>Sign Up</button>
 							<p className="forgot-password text-right" style={{marginTop: '.5rem'}}>
 								Already have an account? <Link to='/login'><b>Sign In</b></Link>

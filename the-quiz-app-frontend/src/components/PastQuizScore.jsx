@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './PastQuizScore.css'
 import { SIGN_IN, SIGN_OUT } from '../reducers/auth'
 import { useSelector, useDispatch } from 'react-redux'
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 
@@ -18,7 +18,7 @@ function PastQuizScore(props) {
 
     useEffect(() => {
         // ${isLogged.payload[0]._id}
-        axios.get(`http://localhost:5000/quiz/${isLogged.payload[0]._id}`)
+        axios.get(`http://localhost:5000/quiz/${isLogged.payload._id}`)
         .then((response) => {
             var data = response.data.quiz;
             setPastScore(data)
@@ -30,6 +30,7 @@ function PastQuizScore(props) {
     }, [])
 
     const SignOut = () => {
+        localStorage.removeItem("user");
         console.log('Sign Out')
         dispatch(SIGN_OUT())
     }
@@ -37,7 +38,7 @@ function PastQuizScore(props) {
     function MyVerticallyCenteredModal(props) {
         const getData = () => {
             pastScore.forEach(ele => {
-                if(ele.quizID == quiz) {
+                if(ele.quizID === quiz) {
                     setIndScore(ele.score)
                     setIndQuizData(ele.quizData)
                 }
@@ -91,10 +92,10 @@ function PastQuizScore(props) {
                 <>
                     <div className="flex">
                         <Link to="/"><button className="btn btn-primary">Home</button></Link>
-                        <Link to="/"><button className="btn btn-primary" onClick={() => SignOut()}>Logout</button></Link>
+                        <button className="btn btn-primary" onClick={() => SignOut()}>Logout</button>
                     </div>
-                    Hey, {isLogged.payload[0].firstName}<br></br>
-                    Your Acc ID: {isLogged.payload[0]._id}<br></br><br></br>
+                    Hey, {isLogged.payload.firstName}<br></br>
+                    Your Acc ID: {isLogged.payload._id}<br></br><br></br>
                     <table border="1">
                         <thead>
                             <td>Quiz ID</td>

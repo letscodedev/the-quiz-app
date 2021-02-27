@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './Quiz.css'
-import { SIGN_IN, SIGN_OUT } from '../reducers/auth'
+import { SIGN_OUT } from '../reducers/auth'
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux'
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
 
 function Quiz() {
@@ -41,7 +41,7 @@ function Quiz() {
     })
 
     const time = () => {
-        if(timer == 0) {
+        if(timer === 0) {
             var correctAnswer;
             ques[currentQuestion].answerOptions.map(q => {
                 if(q.isCorrect) {
@@ -54,9 +54,9 @@ function Quiz() {
                 yourAns: 'NOT ATTEMPTED!'
             }
             setQuizData([...quizData, question])
-            if((currentQuestion+1 == ques.length)) {
+            if((currentQuestion+1 === ques.length)) {
                 const data = {
-                    userID: isLogged.payload[0]._id,
+                    userID: isLogged.payload._id,
                     quizID: quizID,
                     quizData: quizData,
                     score: score
@@ -80,6 +80,7 @@ function Quiz() {
     }
 
     const SignOut = () => {
+        localStorage.removeItem("user");
         console.log('Sign Out')
         dispatch(SIGN_OUT())
     }
@@ -106,7 +107,7 @@ function Quiz() {
 			setCurrentQuestion(nextQuestion);
 		} else {
             const data = {
-                userID: isLogged.payload[0]._id,
+                userID: isLogged.payload._id,
                 quizID: quizID,
                 quizData: quizData,
                 score: score

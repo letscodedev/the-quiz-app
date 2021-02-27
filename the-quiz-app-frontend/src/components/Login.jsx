@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios';
 
 function Login() {
+	const [error, setError] = useState('')
 	const [mobile, setMobile] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
@@ -32,9 +33,11 @@ function Login() {
             console.log(user)
             if(user.auth === true) {
                 dispatch(SIGN_IN(user.user_data))
+				localStorage.setItem("user", JSON.stringify(user.user_data));
             }
         })
         .catch((error) => {
+			setError("Mobile Number or Password does not match!")
 			console.log(error)
 		});
     }
@@ -55,6 +58,7 @@ function Login() {
 							<label>Password</label>
 							<input type="password" name="password" className="form-control" placeholder="*******" onChange={event => onChangeHandler(event)}/>
 						</div>
+						{<><p style={{color: 'red', fontWeight: '800'}}>{error}</p></>}
 						<button type="submit" className="btn btn-primary btn-block" onClick={event => {loginUserWithEmailAndPasswordHandler(event, mobile, password);}}>Login</button>
 						<p className="forgot-password text-right" style={{marginTop: '.5rem'}}>
 							Don't have an account? <Link to='/signup'><b>Sign up</b></Link>

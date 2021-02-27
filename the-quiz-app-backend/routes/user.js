@@ -42,9 +42,10 @@ router.post('/login', (req, res, next) => {
                 });
             }
             if(result) {
+                console.log(result)
                 return res.status(200).json({
                     message: 'Auth successful!', // Password Match - Login Successful!
-                    user_data: user,
+                    user_data: user[0],
                     auth: true
                 });
             } else {
@@ -107,7 +108,7 @@ router.post('/register', upload.single('photo'), (req, res, next) => {
                         console.log(result);
                         res.status(200).json({
                             message: 'User created!',
-                            user_data: user,
+                            user_data: result,
                             auth: true
                         })
                     })
